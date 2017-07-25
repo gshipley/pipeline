@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: mypipeline
+  labels:
+    name: mypipeline
+  annotations:
+    pipeline.alpha.openshift.io/uses: '[{"name": "myapp", "namespace": "", "kind": "DeploymentConfig"}]'
+spec:
+  triggers:
+    -
+      type: GitHub
+      github:
+        secret: secret101
+    -
+      type: Generic
+      generic:
+        secret: secret101
+  runPolicy: Serial
+  source:
+    git:
+      uri: https://github.com/gshipley/pipeline.git
+    type: Git
+  strategy:
+    type: JenkinsPipeline
+    jenkinsPipelineStrategy: {}      
+  output:
+  resources:
+  postCommit:
